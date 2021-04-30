@@ -285,7 +285,7 @@ class _InputPageState extends State<InputPage> {
     _cancelTimer();
     setState(() {
       testColor = kACTIVE_CARD_COLOR;
-      _timerBtnIcon = Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextResume);
+      _timerBtnIcon = Icon_fill(icon: Icons.play_arrow, text: btnTextResume);
     });
   }
 
