@@ -22,7 +22,7 @@ class InputPage extends StatefulWidget {
   _InputPageState createState() => _InputPageState();
 }
 
-class _InputPageState extends State<InputPage>{
+class _InputPageState extends State<InputPage> {
   Mode selectedMode = null;
   int height = 180;
   int weight = 74;
@@ -34,14 +34,19 @@ class _InputPageState extends State<InputPage>{
   Timer _timer;
   int setNum = 0;
   int pomodoroNum = 0;
-  Icon_fill _timerBtnIcon = Icon_fill(icon: Icons.play_arrow, text: btnTextStart);
+  Icon_fill _timerBtnIcon =
+      Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextStart);
   Color testColor = kINACTIVE_CARD_COLOR;
 
   @override
+  void dispose() {
+    _cancelTimer();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
         title: Text('ANIMEDORO'),
       ),
@@ -74,7 +79,6 @@ class _InputPageState extends State<InputPage>{
                         secondsToFormattedTime(remainingTime),
                         style: kNUMBER_STYLE,
                       ),
-
                     ],
                   ),
                   SizedBox(height: 5),
@@ -104,8 +108,9 @@ class _InputPageState extends State<InputPage>{
                     colour: selectedMode == Mode.chill
                         ? kACTIVE_CARD_COLOR
                         : kINACTIVE_CARD_COLOR,
-                    cardChild:
-                    Icon_fill(icon: Icons.airline_seat_flat_angled_rounded, text: 'CHILL'),
+                    cardChild: Icon_fill(
+                        icon: Icons.airline_seat_flat_angled_rounded,
+                        text: 'CHILL'),
                   ),
                 ),
                 Expanded(
@@ -119,8 +124,8 @@ class _InputPageState extends State<InputPage>{
                     colour: selectedMode == Mode.serious
                         ? kACTIVE_CARD_COLOR
                         : kINACTIVE_CARD_COLOR,
-                    cardChild: Icon_fill(
-                        icon: Icons.auto_stories, text: 'SERIOUS'),
+                    cardChild:
+                        Icon_fill(icon: Icons.auto_stories, text: 'SERIOUS'),
                   ),
                 ),
               ],
@@ -137,31 +142,30 @@ class _InputPageState extends State<InputPage>{
                   child: ReusableCard(
                     cardChild: _timerBtnIcon,
                     colour: testColor,
-                      // onPress: () {
-                      //   setState(() {
-                      //     testColor = kACTIVE_CARD_COLOR;
-                      //   });
-                      // }
+                    // onPress: () {
+                    //   setState(() {
+                    //     testColor = kACTIVE_CARD_COLOR;
+                    //   });
+                    // }
                     ///WIERD problem, if I put this in a function it starts running automatically but putting the function's body directly in onPress solves the problem
-                    onPress:() {
-                      switch(status) {
+                    onPress: () {
+                      switch (status) {
                         case AnimedoroStatus.paused:
                           _animedoroCountdown();
                           break;
                         case AnimedoroStatus.running:
-                        // TODO: Handle this case.
+                          _animedoroPause();
                           break;
                         case AnimedoroStatus.anime:
-                        // TODO: Handle this case.
+                          // TODO: Handle this case.
                           break;
                         case AnimedoroStatus.finished:
-                        // TODO: Handle this case.
+                          // TODO: Handle this case.
                           break;
                       }
                     },
                   ),
                 ),
-
                 Expanded(
                   child: ReusableCard(
                     colour: kINACTIVE_CARD_COLOR,
@@ -185,8 +189,7 @@ class _InputPageState extends State<InputPage>{
                                   setState(() {
                                     age--;
                                   });
-                                }
-                            ),
+                                }),
                             SizedBox(width: 10),
                             RoundIconButton(
                                 icon_child: FontAwesomeIcons.plus,
@@ -194,8 +197,7 @@ class _InputPageState extends State<InputPage>{
                                   setState(() {
                                     age++;
                                   });
-                                }
-                            ),
+                                }),
                           ],
                         ),
                       ],
@@ -212,14 +214,13 @@ class _InputPageState extends State<InputPage>{
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                  'SET : $setNum',
+                'SET : $setNum',
                 style: kRESULT_STYLE,
               ),
               Progress(
                 total: pomodoroNum,
-                done: pomodoroNum - (setNum*kPOMODORO_PER_sET),
+                done: pomodoroNum - (setNum * kPOMODORO_PER_sET),
               ),
-              
             ],
           ),
 
@@ -227,11 +228,13 @@ class _InputPageState extends State<InputPage>{
 
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ResultsPage()));
             },
             child: Container(
               child: Center(
-                child: Text('CALCULATE',
+                child: Text(
+                  'CALCULATE',
                   style: kRESULT_STYLE,
                   textAlign: TextAlign.center,
                 ),
@@ -242,19 +245,17 @@ class _InputPageState extends State<InputPage>{
               height: TAB_HEIGHT,
             ),
           ),
-
         ],
       ),
     );
   }
-
 
   String secondsToFormattedTime(int seconds) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
     String remainingSecondsFormatted;
 
-    if(remainingSeconds < 10)
+    if (remainingSeconds < 10)
       remainingSecondsFormatted = '0$remainingSeconds';
     else
       remainingSecondsFormatted = remainingSeconds.toString();
@@ -279,65 +280,52 @@ class _InputPageState extends State<InputPage>{
   //   }
   // }
 
+  _animedoroPause() {
+    status = AnimedoroStatus.paused;
+    _cancelTimer();
+    setState(() {
+      testColor = kACTIVE_CARD_COLOR;
+      _timerBtnIcon = Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextResume);
+    });
+  }
+
   _animedoroCountdown() {
-    print('running');
-     status = AnimedoroStatus.running;
-     _cancelTimer();
-     
-     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        if(remainingTime > 0) {
+    setState(() {
+      testColor = kACTIVE_CARD_COLOR;
+      _timerBtnIcon = Icon_fill(icon: Icons.pause, text: btnTextPause);
+    });
+
+    status = AnimedoroStatus.running;
+
+    _cancelTimer();
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingTime > 0) {
+        setState(() {
+          remainingTime--;
+        });
+      } else {
+        //TODO: PLAY SOUND ANIME RELATED
+        pomodoroNum++;
+        _cancelTimer();
+        if (pomodoroNum == kPOMODORO_PER_sET) {
+          print('4 sets done');
+        } else {
+          status = AnimedoroStatus.anime;
           setState(() {
-            remainingTime--;
-            _timerBtnIcon = Icon_fill(icon: Icons.pause, text: btnTextPause);
+            remainingTime = kANIME_TIME;
+            _timerBtnIcon =
+                Icon_fill(icon: Icons.tv_rounded, text: btnTextAnime);
           });
         }
-        else {
-          //TODO: PLAY SOUND ANIME RELATED
-          pomodoroNum++;
-          _cancelTimer();
-          if(pomodoroNum == kPOMODORO_PER_sET) {
-            print('4 sets done');
-          }
-          else {
-            status = AnimedoroStatus.anime;
-            setState(() {
-              remainingTime = kANIME_TIME;
-              _timerBtnIcon = Icon_fill(icon: Icons.tv_rounded, text: btnTextAnime);
-            });
-          }
-        }
-     });
+      }
+    });
   }
 
   void _cancelTimer() {
     if (_timer != null) {
       _timer.cancel();
     }
-  }
-
-}
-
-class RoundIconButton extends StatelessWidget {
-
-  // ignore: non_constant_identifier_names
-  RoundIconButton({@required this.icon_child, @required this.onPressed});
-  // ignore: non_constant_identifier_names
-  final IconData icon_child;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      elevation: 0,
-      child: Icon(icon_child),
-      onPressed: onPressed,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      fillColor: Color(0xFF4C4F5E),
-    );
   }
 }
 
