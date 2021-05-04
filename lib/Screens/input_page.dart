@@ -187,7 +187,6 @@ class _InputPageState extends State<InputPage> {
                       colour: resetBtnColor,
                       onPress: () {
                         _animedoroReset();
-                        _playSound();
                       }),
                 ),
               ],
