@@ -9,6 +9,7 @@ environment:
 dependencies:
   simple_timer: ^2.0.0
   font_awesome_flutter: ^9.0.0
+  audioplayers: ^0.18.3
   flutter:
     sdk: flutter
 
@@ -20,3 +21,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/

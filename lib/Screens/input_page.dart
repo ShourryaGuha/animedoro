@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'Results.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import '../widgets/icon_content.dart';
 import '../widgets/reusable_card.dart';
 import '../utils/constants.dart';
-import 'package:simple_timer/simple_timer.dart';
 import 'package:bmi_calculator/widgets/progress.dart';
 import 'package:bmi_calculator/enum.dart';
-import 'package:bmi_calculator/widgets/custom_button.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 const double TAB_HEIGHT = 80.0;
 
@@ -23,25 +21,34 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  //TODO: implemet mode selection, 60min and 37min
   Mode selectedMode = null;
-  int height = 180;
-  int weight = 74;
-  int age = 19;
 
+  final player = AudioCache();
   int remainingTime = kSTUDY_TIME;
   String startBtnText = btnTextStart;
-  AnimedoroStatus status = AnimedoroStatus.paused;
+  static AnimedoroStatus status = AnimedoroStatus.paused;
   Timer _timer;
   int setNum = 0;
   int pomodoroNum = 0;
   Icon_fill _timerBtnIcon =
       Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextStart);
-  Color testColor = kINACTIVE_CARD_COLOR;
+  Icon_fill _resetBtnIcon =
+      Icon_fill(icon: Icons.refresh_rounded, text: btnTextReset);
+
+  Color playBtnColor = kINACTIVE_CARD_COLOR;
+  Color resetBtnColor = kINACTIVE_CARD_COLOR;
 
   @override
   void dispose() {
     _cancelTimer();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    player.load('bell.mp3');
   }
 
   @override
@@ -141,68 +148,47 @@ class _InputPageState extends State<InputPage> {
                   //SERIOUS
                   child: ReusableCard(
                     cardChild: _timerBtnIcon,
-                    colour: testColor,
-                    // onPress: () {
-                    //   setState(() {
-                    //     testColor = kACTIVE_CARD_COLOR;
-                    //   });
-                    // }
+                    colour: playBtnColor,
                     ///WIERD problem, if I put this in a function it starts running automatically but putting the function's body directly in onPress solves the problem
                     onPress: () {
+                      print('Main btn pressed');
                       switch (status) {
                         case AnimedoroStatus.paused:
                           _animedoroCountdown();
                           break;
                         case AnimedoroStatus.running:
-                          _animedoroPause();
+                          _animedoroPause(
+                              displayIcon: Icons.play_arrow_rounded);
                           break;
-                        case AnimedoroStatus.anime:
-                          // TODO: Handle this case.
+                        case AnimedoroStatus.animeRunning:
+                          _animedoroPauseAnimeBreak();
+                          break;
+                        case AnimedoroStatus.animePaused:
+                          _animedoroAnimeCountdown();
                           break;
                         case AnimedoroStatus.finished:
-                          // TODO: Handle this case.
+                          setNum++;
+                          _animedoroCountdown();
+                          break;
+                        case AnimedoroStatus.longBreak:
+                          _animedoroPauseLongBreak();
+                          break;
+                        case AnimedoroStatus.pauseLongBreak:
+                          _animedoroLongBreakCountdown();
                           break;
                       }
                     },
                   ),
                 ),
                 Expanded(
+                  //SERIOUS
                   child: ReusableCard(
-                    colour: kINACTIVE_CARD_COLOR,
-                    cardChild: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'AGE',
-                          style: kLABEL_TEXT_STYLE,
-                        ),
-                        Text(
-                          age.toString(),
-                          style: kNUMBER_STYLE,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RoundIconButton(
-                                icon_child: FontAwesomeIcons.minus,
-                                onPressed: () {
-                                  setState(() {
-                                    age--;
-                                  });
-                                }),
-                            SizedBox(width: 10),
-                            RoundIconButton(
-                                icon_child: FontAwesomeIcons.plus,
-                                onPressed: () {
-                                  setState(() {
-                                    age++;
-                                  });
-                                }),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                      cardChild: _resetBtnIcon,
+                      colour: resetBtnColor,
+                      onPress: () {
+                        _animedoroReset();
+                        _playSound();
+                      }),
                 ),
               ],
             ),
@@ -218,7 +204,7 @@ class _InputPageState extends State<InputPage> {
                 style: kRESULT_STYLE,
               ),
               Progress(
-                total: pomodoroNum,
+                total: kPOMODORO_PER_sET,
                 done: pomodoroNum - (setNum * kPOMODORO_PER_sET),
               ),
             ],
@@ -250,48 +236,53 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  String secondsToFormattedTime(int seconds) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    String remainingSecondsFormatted;
 
-    if (remainingSeconds < 10)
-      remainingSecondsFormatted = '0$remainingSeconds';
-    else
-      remainingSecondsFormatted = remainingSeconds.toString();
-
-    return '$minutes:$remainingSecondsFormatted';
+  _animedoroReset() {
+    pomodoroNum = 0;
+    setNum = 0;
+    _cancelTimer();
+    _animedoroStop();
   }
 
-  // _mainBtnPressed() {
-  //   switch(status) {
-  //     case AnimedoroStatus.paused:
-  //       _animedoroCountdown();
-  //       break;
-  //     case AnimedoroStatus.running:
-  //       // TODO: Handle this case.
-  //       break;
-  //     case AnimedoroStatus.anime:
-  //       // TODO: Handle this case.
-  //       break;
-  //     case AnimedoroStatus.finished:
-  //       // TODO: Handle this case.
-  //       break;
-  //   }
-  // }
-
-  _animedoroPause() {
+  _animedoroStop() {
     status = AnimedoroStatus.paused;
+    setState(() {
+      resetBtnColor = kACTIVE_CARD_COLOR;
+      _timerBtnIcon =
+          Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextStart);
+      remainingTime = kSTUDY_TIME;
+    });
+  }
+
+  ///Universal Pause function used for study time pause, anime break time pause, long break time pause.
+  _animedoroPause({@required IconData displayIcon, AnimedoroStatus currentStatus}) {
+
+    //if currentStatus not passed then status by default = study time pause
+    currentStatus == null ? status = AnimedoroStatus.paused : status = currentStatus;
     _cancelTimer();
     setState(() {
-      testColor = kACTIVE_CARD_COLOR;
-      _timerBtnIcon = Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextResume);
+      if (resetBtnColor != kINACTIVE_CARD_COLOR)
+        resetBtnColor = kINACTIVE_CARD_COLOR;
+      playBtnColor = kACTIVE_CARD_COLOR;
+      _timerBtnIcon = Icon_fill(icon: displayIcon, text: btnTextResume);
     });
+  }
+
+  _animedoroPauseAnimeBreak() {
+    status = AnimedoroStatus.animePaused;
+    _animedoroPause(displayIcon: Icons.tv_rounded, currentStatus: status);
+  }
+
+  _animedoroPauseLongBreak() {
+    status = AnimedoroStatus.pauseLongBreak;
+    _animedoroPause(displayIcon: Icons.play_arrow_rounded, currentStatus: status);
   }
 
   _animedoroCountdown() {
     setState(() {
-      testColor = kACTIVE_CARD_COLOR;
+      if (resetBtnColor != kINACTIVE_CARD_COLOR)
+        resetBtnColor = kINACTIVE_CARD_COLOR;
+      playBtnColor = kACTIVE_CARD_COLOR;
       _timerBtnIcon = Icon_fill(icon: Icons.pause, text: btnTextPause);
     });
 
@@ -305,13 +296,18 @@ class _InputPageState extends State<InputPage> {
           remainingTime--;
         });
       } else {
-        //TODO: PLAY SOUND ANIME RELATED
+        _playSound();
         pomodoroNum++;
         _cancelTimer();
-        if (pomodoroNum == kPOMODORO_PER_sET) {
-          print('4 sets done');
+        if (pomodoroNum % kPOMODORO_PER_sET == 0) {   //pomodoroNum should be multiples of pomodoroperSet, 8 pomodoroNum = 2 sets done, 12 pom = 3 sets....
+          status = AnimedoroStatus.pauseLongBreak;
+          setState(() {
+            remainingTime = kLONG_BREAK_TIME;
+            _timerBtnIcon = Icon_fill(
+                icon: Icons.play_arrow_rounded, text: btnTextLongBreak);
+          });
         } else {
-          status = AnimedoroStatus.anime;
+          status = AnimedoroStatus.animePaused;
           setState(() {
             remainingTime = kANIME_TIME;
             _timerBtnIcon =
@@ -322,10 +318,76 @@ class _InputPageState extends State<InputPage> {
     });
   }
 
+  _animedoroAnimeCountdown() {
+    status = AnimedoroStatus.animeRunning;
+    _cancelTimer();
+    setState(() {
+      _timerBtnIcon = Icon_fill(icon: Icons.tv_off_rounded, text: btnTextAnime);
+    });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingTime > 0) {
+        setState(() {
+          remainingTime--;
+        });
+      } else {
+        _playSound();
+        _cancelTimer();
+        remainingTime = kSTUDY_TIME;
+        status = AnimedoroStatus.paused;
+        setState(() {
+          _timerBtnIcon =
+              Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextStart);
+        });
+      }
+    });
+  }
+
+  _animedoroLongBreakCountdown() {
+    status = AnimedoroStatus.longBreak;
+    _cancelTimer();
+    setState(() {
+      _timerBtnIcon = Icon_fill(icon: Icons.pause, text: btnTextLongBreak);
+    });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingTime > 0) {
+        setState(() {
+          remainingTime--;
+        });
+      } else {
+        _playSound();
+        _cancelTimer();
+        remainingTime = kSTUDY_TIME;
+        status = AnimedoroStatus.finished;
+        setState(() {
+          _timerBtnIcon =
+              Icon_fill(icon: Icons.play_arrow_rounded, text: btnTextStart);
+        });
+      }
+    });
+  }
+
+  _playSound() {
+    // print('play sound');
+    player.play('bell.mp3');
+  }
+
   void _cancelTimer() {
     if (_timer != null) {
       _timer.cancel();
     }
   }
-}
 
+  String secondsToFormattedTime(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    String remainingSecondsFormatted;
+
+    if (remainingSeconds < 10)
+      remainingSecondsFormatted = '0$remainingSeconds';
+    else
+      remainingSecondsFormatted = remainingSeconds.toString();
+
+    return '$minutes:$remainingSecondsFormatted';
+  }
+
+}

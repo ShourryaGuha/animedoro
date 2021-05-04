@@ -1,6 +1,9 @@
 enum AnimedoroStatus {
   running,
   paused,
-  anime,
+  animeRunning,
+  longBreak,
+  pauseLongBreak,
+  animePaused,
   finished
 }

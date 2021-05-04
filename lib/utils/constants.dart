@@ -17,12 +17,21 @@ const kRESULT_STYLE = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
-const int kSTUDY_TIME = 37*60;
-const int kANIME_TIME = 23*60;
+// const int kSTUDY_TIME = 37*60;
+// const int kANIME_TIME = 23*60;
+// const int kLONG_BREAK_TIME = 40*60;
+// const int kPOMODORO_PER_sET = 4;
+
+const int kSTUDY_TIME = 6;
+const int kANIME_TIME = 4;
+const int kLONG_BREAK_TIME = 5;
 const int kPOMODORO_PER_sET = 4;
 
 const Map<AnimedoroStatus, String> message = {
-  AnimedoroStatus.anime : 'Anime Time!',
+  AnimedoroStatus.animeRunning : 'Anime Time!',
+  AnimedoroStatus.animePaused : 'Start anime!',
+  AnimedoroStatus.longBreak : 'Just relax',
+  AnimedoroStatus.pauseLongBreak : 'Just relax',
   AnimedoroStatus.finished : 'Congrats!',
   AnimedoroStatus.paused : 'Ready to Start?',
   AnimedoroStatus.running : 'You got this!',
@@ -32,4 +41,5 @@ const btnTextStart = 'START';
 const btnTextResume = 'RESUME';
 const btnTextPause = 'PAUSE';
 const btnTextAnime = 'BREAK';
+const btnTextLongBreak = 'RELAX';
 const btnTextReset = 'RESET';

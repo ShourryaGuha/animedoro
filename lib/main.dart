@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Screens/input_page.dart';
 
-void main() => runApp(BMICalculator());
+void main() => runApp(Animedoro());
 
-class BMICalculator extends StatelessWidget {
+class Animedoro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
