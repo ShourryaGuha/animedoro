@@ -7,7 +7,6 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  simple_timer: ^2.0.0
   font_awesome_flutter: ^9.0.0
   audioplayers: ^0.18.3
   flutter:
