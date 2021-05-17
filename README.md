@@ -1,7 +1,7 @@
 # Animedoro
 
 Animedoro is a productivity app based on the principles of the Pomodoro Technique. It is a tool I built to motivate students to study and make full use of their time. 
-Procastination had been a big issue for me in high school. Laying off assignments, studying late for a test, I have been through it all. The _**regret**_ and _**guilt**_ that you feel for failing at something because of your habit of procastination is not something I wanted to feel again.
+Procrastination had been a big issue for me in high school. Laying off assignments, studying late for a test, I have been through it all. The _**regret**_ and _**guilt**_ that you feel for failing at something because of your habit of procrastination is not something I wanted to feel again.
 
 The **Pomdoro Technique** has helped me a lot, so I decide to turn it into an app! 
 
