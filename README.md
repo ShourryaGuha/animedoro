@@ -19,4 +19,4 @@ The **Pomdoro Technique** has helped me a lot, so I decide to turn it into an ap
 4. You get a long break at the end of each set
 5. Result calculator at the bottom to tell you number of hours studied and number of hours of break time
 
-The 'Anime Twist' was inspired by this [YouuTube video](https://www.youtube.com/watch?v=bUjGZJIgse0)
+The 'Anime Twist' was inspired by this [YouTube video](https://www.youtube.com/watch?v=bUjGZJIgse0)
