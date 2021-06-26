@@ -7,7 +7,7 @@ The **Pomodoro Technique** has helped me a lot, so I decide to turn it into an a
 
 * Similar to how pomodoro works, animedoro has an initial timer of 37 minutes(you can change the time to 60 minutes)
 ![Screenshot_20210517-191534__01](https://user-images.githubusercontent.com/71526713/123508898-d78de480-d68f-11eb-8f44-c8f6e30d935b.jpg) 
-![Screenshot_20210517-191546__01](https://user-images.githubusercontent.com/71526713/123508942-2cc9f600-d690-11eb-9211-629134b4001e.jpg)
+![Screenshot_20210517-191546__01](https://user-images.githubusercontent.com/71526713/123508970-5a16a400-d690-11eb-82cf-dddbe5a67136.jpg)
 * After the timer ends, you will hear a tune stating that the timer has ended
 * That's when you watch an episode of anime, which usually lasts for 23 minutes (37 + 23 = 1 hour)
 * This effort-reward cycle programs your sub-conscious to put in full effort for those 37/60 minutes and get as much work done as possible, thus maximising your efficiency
