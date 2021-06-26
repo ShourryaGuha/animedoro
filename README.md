@@ -6,19 +6,15 @@ Procrastination had been a big issue for me in high school. Laying off assignmen
 The **Pomodoro Technique** has helped me a lot, so I decide to turn it into an app! 
 
 * Similar to how pomodoro works, animedoro has an initial timer of 37 minutes(you can change the time to 60 minutes) 
-![Screenshot_20210517-191534__01](https://user-images.githubusercontent.com/71526713/123508898-d78de480-d68f-11eb-8f44-c8f6e30d935b.jpg)      
-![Screenshot_20210517-191546__01](https://user-images.githubusercontent.com/71526713/123508970-5a16a400-d690-11eb-82cf-dddbe5a67136.jpg)
 * After the timer ends, you will hear a tune stating that the timer has ended
 * That's when you watch an episode of anime, which usually lasts for 23 minutes (37 + 23 = 1 hour)
 * This effort-reward cycle programs your sub-conscious to put in full effort for those 37/60 minutes and get as much work done as possible, thus maximising your efficiency
 * Once you have completed **4 animedroro cycles**, you get a long break for your efforts!
+* You can view the number of sets completed to keep teack on your progress
+* There is a result calculator button at the bottom which calculates the total work time and anime time 
 
-## App features:
-
-1. Ability to change between _Serious_(60 min) and _Chill_(37 min) modes based on how much work do you want to finish. The break time remains the same
-2. Animedoro cycle indicator (Indicated number of cycles finished)
-3. Indicates the number of sets finished (1 set = 4 animedoro cycles)
-4. You get a long break at the end of each set
-5. Result calculator at the bottom to tell you number of hours studied and number of hours of break time
+![Screenshot_20210517-191534__01](https://user-images.githubusercontent.com/71526713/123509435-2b4dfd00-d693-11eb-90e9-93da4283ed2c.jpg)
+![Screenshot_20210517-193642__01](https://user-images.githubusercontent.com/71526713/123509482-694b2100-d693-11eb-978d-db26f1dc3e0a.jpg)
+![Screenshot_20210517-193824__02](https://user-images.githubusercontent.com/71526713/123509490-6f410200-d693-11eb-84c2-c8458546aa8d.jpg)
 
 The 'Anime Twist' was inspired by this [YouTube video](https://www.youtube.com/watch?v=bUjGZJIgse0)
