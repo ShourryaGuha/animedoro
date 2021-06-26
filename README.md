@@ -13,6 +13,8 @@ The **Pomodoro Technique** has helped me a lot, so I decide to turn it into an a
 * You can view the number of sets completed to keep teack on your progress
 * There is a result calculator button at the bottom which calculates the total work time and anime time 
 
+## App screenshots
+
 ![Screenshot_20210517-191534__01](https://user-images.githubusercontent.com/71526713/123509435-2b4dfd00-d693-11eb-90e9-93da4283ed2c.jpg)
 ![Screenshot_20210517-193642__01](https://user-images.githubusercontent.com/71526713/123509482-694b2100-d693-11eb-978d-db26f1dc3e0a.jpg)
 ![Screenshot_20210517-193824__02](https://user-images.githubusercontent.com/71526713/123509490-6f410200-d693-11eb-84c2-c8458546aa8d.jpg)
