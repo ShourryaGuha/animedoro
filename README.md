@@ -10,7 +10,7 @@ The **Pomodoro Technique** has helped me a lot, so I decide to turn it into an a
 * That's when you watch an episode of anime, which usually lasts for 23 minutes (37 + 23 = 1 hour)
 * This effort-reward cycle programs your sub-conscious to put in full effort for those 37/60 minutes and get as much work done as possible, thus maximising your efficiency
 * Once you have completed **4 animedroro cycles**, you get a long break for your efforts!
-* You can view the number of sets completed to keep teack on your progress
+* You can view the number of sets completed to keep track on your progress
 * There is a result calculator button at the bottom which calculates the total work time and anime time 
 
 ## App screenshots
